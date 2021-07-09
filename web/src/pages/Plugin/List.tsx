@@ -37,6 +37,9 @@ const Page: React.FC = () => {
   const [name, setName] = useState('');
   const [paginationConfig, setPaginationConfig] = useState({ pageSize: 10, current: 1 });
 
+  // 加入点击插件对应的schema
+  // const [schema, setSchema]=useState<Record<string, any>>()
+
   const savePageList = (page = 1, pageSize = 10) => {
     history.replace(`/plugin/list?page=${page}&pageSize=${pageSize}`);
   };
