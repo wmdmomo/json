@@ -49,17 +49,18 @@ const FormNode: React.FC<props> = ({ name, item, parentName, requiredPro }) => {
   const { formatMessage } = useIntl()
   const required = false || (requiredPro && requiredPro.indexOf(name) > -1)
 
-  const labelName = [parentName,name].join('.')
+  const labelName = [...parentName,name]
+  const showName=labelName.join('.')
   return (
     <>
       <Form.Item
-        label={labelName}
-        name={labelName}
+        label={showName}
+        name={showName}
         rules={[{
           required,
           message: `${formatMessage({ id: 'component.global.pleaseEnter' })} ${name}`
         }]}
-        // tooltip={formatMessage({ id: `component.pluginForm.api-breaker.${labelName}.tooltip` })}
+        tooltip={formatMessage({ id: `component.pluginForm.api-breaker.${showName}.tooltip` })}
         validateTrigger={['onChange', 'onBlur', 'onClick']}
         ><InputNumber min={item.minimum} max={item.maximum} required />
       </Form.Item>
@@ -68,18 +69,20 @@ const FormNode: React.FC<props> = ({ name, item, parentName, requiredPro }) => {
 }
 const FormList: React.FC<props> = ({ name, item, parentName, requiredPro }) => {
   const { formatMessage } = useIntl()
-  const labelName = [parentName,name].join('.')
-  const required = false || (requiredPro && requiredPro.indexOf(labelName) > -1)
+  const labelName = [...parentName,name]
+  const showName=labelName.join('.')
+  const required = false || (requiredPro && requiredPro.indexOf(showName) > -1)
+  const initialValue=Array(labelName.length).join(".").split(".")
   return (
     <>
-    <Form.List name={parentName}>
+    <Form.List name={labelName} initialValue={initialValue}>
       {(fields, { add, remove }) => {
           return (
             <div>
               {fields.map((field, index) => (
                 <Form.Item
                   {...(index === 0 ? FORM_ITEM_LAYOUT : FORM_ITEM_WITHOUT_LABEL)}
-                  label={index === 0 && labelName}
+                  label={index === 0 && showName}
                   tooltip={formatMessage({ id: 'component.pluginForm.api-breaker.unhealthy.http_statuses.tooltip' })}
                   key={field.key}
                   rules={[{
@@ -143,7 +146,6 @@ const FormTest: React.FC<test> = ({ schema, parentName }) => {
           if (properties[item].type === 'array') {
             return <>
               <FormList key={item} name={item} parentName={parentName} item={properties[item]} requiredPro={requiredProperty} />
-              <span>{parentName}</span>
               </>
           }
           // 父亲的名字也要传给它
