@@ -58,7 +58,7 @@ jobs:
           nohup go run ./main.go &
 
       - name: Cache node_modules
-        uses: actions/cache@v2.1.6
+        uses: actions/cache@v3.0.3
         id: yarn-cache
         with:
           path: '*/node_modules'
@@ -67,7 +67,7 @@ jobs:
             ${{ runner.os }}-yarn-cache0
 
       - name: Cache Cypress binary
-        uses: actions/cache@v2.1.6
+        uses: actions/cache@v3.0.3
         id: cypress-binary-cache
         with:
           path: '*/cypress/cache'
